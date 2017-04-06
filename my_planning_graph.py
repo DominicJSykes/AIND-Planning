@@ -406,6 +406,14 @@ class PlanningGraph():
         :param node_a2: PgNode_a
         :return: bool
         '''
+        action = node_a1.action
+        action2 = node_a2.action
+        for effect in action.effect_add:
+            if effect in action2.effect_rem:
+                return True
+        for effect in action2.effect_add:
+            if effect in action.effect_rem:
+                return True            
         # TODO test for Inconsistent Effects between nodes
         return False
 
@@ -423,6 +431,20 @@ class PlanningGraph():
         :param node_a2: PgNode_a
         :return: bool
         '''
+        action = node_a1.action
+        action2 = node_a2.action
+        for effect in action.effect_add:
+            if effect in action2.precond_neg:
+                return True
+        for effect in action2.effect_add:
+            if effect in action.precond_neg:
+                return True     
+        for effect in action.effect_rem:
+            if effect in action2.precond_pos:
+                return True
+        for effect in action2.effect_rem:
+            if effect in action.precond_pos:
+                return True  
         # TODO test for Interference between nodes
         return False
 
@@ -436,7 +458,13 @@ class PlanningGraph():
         :param node_a2: PgNode_a
         :return: bool
         '''
-
+        parents = node_a1.parents
+        parents2 = node_a2.parents
+        for parent in parents:
+            for mutex in parent.mutex:
+                for parent2 in parents2:
+                    if parent2.literal == mutex.literal:
+                        return True
         # TODO test for Competing Needs between nodes
         return False
 
@@ -472,6 +500,10 @@ class PlanningGraph():
         :param node_s2: PgNode_s
         :return: bool
         '''
+        if str(node_s1.literal) == "~" + str(node_s2.literal):
+            return True
+        if str(node_s2.literal) == "~" + str(node_s1.literal):
+            return True          
         # TODO test for negation between nodes
         return False
 
@@ -491,6 +523,16 @@ class PlanningGraph():
         :param node_s2: PgNode_s
         :return: bool
         '''
+        #return True if each parent actions in node_s1 are mutex with all parents in node_s2
+        mutex = True
+        for action in node_s1.parents:
+            for action2 in node_s2.parents:
+                if PgNode.is_mutex(action,action2):
+                    continue
+                else:
+                    mutex = False
+        if mutex:
+            return True
         # TODO test for Inconsistent Support between nodes
         return False
 
@@ -501,5 +543,6 @@ class PlanningGraph():
         '''
         level_sum = 0
         # TODO implement
+        
         # for each goal in the problem, determine the level cost, then add them together
         return level_sum
