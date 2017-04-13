@@ -237,39 +237,11 @@ def air_cargo_p1() -> AirCargoProblem:
     return AirCargoProblem(cargos, planes, airports, init, goal)
 
 def air_cargo_p2() -> AirCargoProblem:
-    cargos = ['C1', 'C2', 'C3']
-    planes = ['P1', 'P2', 'P3']
-    airports = ['JFK', 'SFO']
+    cargos = ['C1','C2','C3']
+    planes = ['P1','P2','P3']
+    airports = ['SFO','JFK','ATL']
     pos = [expr('At(C1, SFO)'),
            expr('At(C2, JFK)'),
-           expr('At(C3, JFK)'),
-           expr('At(P1, SFO)'),
-           expr('At(P2, JFK)'),
-           expr('At(P3, JFK)'),]
-    neg = [expr('At(C3, SFO)'),
-           expr('In(C3, P1)'),
-           expr('In(C3, P2)'),
-           expr('In(C3, P3)'),   
-           expr('At(C2, SFO)'),
-           expr('In(C2, P1)'),
-           expr('In(C2, P2)'),
-           expr('In(C2, P3)'),    
-           expr('At(C1, JFK)'),
-           expr('In(C1, P1)'),
-           expr('In(C1, P2)'),
-           expr('In(C1, P3)'),    
-           expr('At(P1, JFK)'),
-           expr('At(P2, SFO)'),
-           expr('At(P3, SFO)'),]
-    init = FluentState(pos, neg)
-    goal = [expr('At(C1, JFK)'),
-            expr('At(C2, SFO)'),
-            expr('At(C3, SFO)'),]
-    '''cargos = ['C1','C2','C3']
-    planes = ['P1','P2','P3']
-    airports = ['SFO','JKF','ATL']
-    pos = [expr('At(C1, SFO)'),
-           expr('At(C2, CFK)'),
            expr('At(C3, ATL)'),
            expr('At(P1, SFO)'),
            expr('At(P2, JFK)'),
@@ -285,7 +257,7 @@ def air_cargo_p2() -> AirCargoProblem:
            expr('In(C2, P2)'),
            expr('In(C2, P3)'),
            expr('At(C3, SFO)'),
-           expr('At(C3, JKF)'),
+           expr('At(C3, JFK)'),
            expr('In(C3, P1)'),
            expr('In(C3, P2)'),
            expr('In(C3, P3)'),
@@ -294,11 +266,11 @@ def air_cargo_p2() -> AirCargoProblem:
            expr('At(P2, SFO)'),
            expr('At(P2, ATL)'),
            expr('At(P3, SFO)'),
-           expr('At(P3, JKF)'),]
+           expr('At(P3, JFK)'),]
     init = FluentState(pos, neg)
     goal = [expr('At(C1, JFK)'),
             expr('At(C2, SFO)'),
-            expr('At(C3, SFO)'),] '''
+            expr('At(C3, SFO)'),] 
     return AirCargoProblem(cargos, planes, airports, init, goal)
 
 
@@ -306,9 +278,9 @@ def air_cargo_p3() -> AirCargoProblem:
     # TODO implement Problem 3 definition
     cargos = ['C1','C2','C3','C4']
     planes = ['P1','P2']
-    airports = ['SFO','JKF','ATL','ORD']
+    airports = ['SFO','JFK','ATL','ORD']
     pos = [expr('At(C1, SFO)'),
-           expr('At(C2, CFK)'),
+           expr('At(C2, JFK)'),
            expr('At(C3, ATL)'),
            expr('At(C4, ORD)'),    
            expr('At(P1, SFO)'),
@@ -324,12 +296,12 @@ def air_cargo_p3() -> AirCargoProblem:
            expr('In(C2, P1)'),
            expr('In(C2, P2)'),
            expr('At(C3, SFO)'),
-           expr('At(C3, JKF)'),
+           expr('At(C3, JFK)'),
            expr('At(C3, ORD)'),
            expr('In(C3, P1)'),
            expr('In(C3, P2)'),
            expr('At(C4, SFO)'),
-           expr('At(C4, JKF)'),
+           expr('At(C4, JFK)'),
            expr('At(C4, ATL)'),
            expr('In(C4, P1)'),
            expr('In(C4, P2)'),               
