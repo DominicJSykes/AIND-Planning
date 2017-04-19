@@ -197,7 +197,6 @@ def mutexify(node1: PgNode, node2: PgNode):
     node1.mutex.add(node2)
     node2.mutex.add(node1)
 
-
 class PlanningGraph():
     '''
     A planning graph as described in chapter 10 of the AIMA text. The planning
@@ -535,7 +534,15 @@ class PlanningGraph():
             return True
         # TODO test for Inconsistent Support between nodes
         return False
-
+    
+    def level_cost(self, goal):
+        level = -1
+        for s_level in self.s_levels:
+            level += 1
+            for node in s_level:
+                if node.literal == goal:
+                    return level 
+    
     def h_levelsum(self) -> int:
         '''The sum of the level costs of the individual goals (admissible if goals independent)
 
@@ -544,16 +551,6 @@ class PlanningGraph():
         level_sum = 0
         # TODO implement
         for goal in self.problem.goal:
-            level = -1
-            found = False
-            for s_level in self.s_levels:
-                level += 1
-                if found:
-                    break
-                for node in s_level:
-                    if node.literal == goal:
-                        found = True
-                        level_sum = level_sum + level
-                        break 
+            level_sum += self.level_cost(goal)
         # for each goal in the problem, determine the level cost, then add them together
         return level_sum
