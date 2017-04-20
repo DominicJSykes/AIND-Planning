@@ -293,7 +293,13 @@ class PlanningGraph():
 
             if self.s_levels[level] == self.s_levels[level - 1]:
                 leveled = True
-
+    
+    def check_missing_prenode(self,node,level):
+        for prenode in node.prenodes:
+            if prenode not in self.s_levels[level]:
+                return False
+        return True
+    
     def add_action_level(self, level):
         ''' add an A (action) level to the Planning Graph
 
@@ -306,15 +312,12 @@ class PlanningGraph():
         self.a_levels.append(set())
         for action in self.all_actions:
             node = PgNode_a(action)
-            for prenode in node.prenodes:
-                is_possible = True
-                if prenode not in self.s_levels[level]:
-                    is_possible = False
+            is_possible = node.prenodes.issubset(self.s_levels[level])
             if is_possible:
                 self.a_levels[level].add(node)
-                for s_node in self.s_levels[level]:
-                    node.parents.add(s_node)
+                for s_node in node.prenodes:
                     s_node.children.add(node)
+                    node.parents.add(s_node)
         return
         # TODO add action A level to the planning graph as described in the Russell-Norvig text
         # 1. determine what actions to add and create those PgNode_a objects
@@ -523,15 +526,13 @@ class PlanningGraph():
         :return: bool
         '''
         #return True if each parent actions in node_s1 are mutex with all parents in node_s2
-        mutex = True
         for action in node_s1.parents:
             for action2 in node_s2.parents:
                 if PgNode.is_mutex(action,action2):
                     continue
                 else:
-                    mutex = False
-        if mutex:
-            return True
+                    return False
+        return True
         # TODO test for Inconsistent Support between nodes
         return False
     
